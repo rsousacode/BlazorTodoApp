@@ -1,12 +1,33 @@
+@using BlazorTodoApp.Data
+@inject TodoListService ListService
+
 <div class="navbar-nav align-items-center m-3">
     <div class="col">
-        <button type="button" class=" btn btn-primary px-sm-4 m-1 align-content-center">Add item</button>
+            <button type="button"
+                    class=" btn btn-primary px-sm-4 m-1 align-content-center">Add item</button>
     </div>
 </div>
-
 <div id="accordion">
-    @* Render each todo-entry here *@
+    @foreach (var todoEntry in RenderData.Values)
+    {
+        <TodoEntry
+            Title=@todoEntry.Data.Title
+            Content=@todoEntry.Data.Content
+            />
+    }
 </div>
-@code {
-    
+
+@code
+{
+    Dictionary<int, EntryRenderData> RenderData { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        // Initialize our rendering data
+        foreach (var entryData in ListService.GetEntries())
+        {
+            RenderData.Add(entryData.Id, new EntryRenderData(entryData));
+        }
+    }
+
 }
