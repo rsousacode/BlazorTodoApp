@@ -2,32 +2,33 @@
 @inject TodoListService ListService
 
 <div class="navbar-nav align-items-center m-3">
-    <div class="col">
-            <button type="button"
-                    class=" btn btn-primary px-sm-4 m-1 align-content-center">Add item</button>
-    </div>
+  <div class="col">
+    <button type="button"
+            class=" btn btn-primary px-sm-4 m-1 align-content-center">
+      Add item
+    </button>
+  </div>
 </div>
 <div id="accordion">
-    @foreach (var todoEntry in RenderData.Values)
-    {
-        <TodoEntry
-            Title=@todoEntry.Data.Title
-            Content=@todoEntry.Data.Content
-            />
-    }
+  @foreach (var todoEntry in RenderData.Values)
+  {
+    <TodoEntry
+      Title=@todoEntry.Data.Title
+      Content=@todoEntry.Data.Content/>
+  }
 </div>
 
 @code
 {
-    Dictionary<int, EntryRenderData> RenderData { get; set; } = new();
+  Dictionary<int, EntryRenderData> RenderData { get; set; } = new();
 
-    protected override void OnInitialized()
+  protected override void OnInitialized()
+  {
+  // Initialize our rendering data
+    foreach (var entryData in ListService.GetEntries())
     {
-        // Initialize our rendering data
-        foreach (var entryData in ListService.GetEntries())
-        {
-            RenderData.Add(entryData.Id, new EntryRenderData(entryData));
-        }
+      RenderData.Add(entryData.Id, new EntryRenderData(entryData));
     }
+  }
 
 }
