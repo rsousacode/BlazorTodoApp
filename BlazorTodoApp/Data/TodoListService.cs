@@ -23,7 +23,24 @@ public class TodoListService
 
         };
     }
+    /// <summary>
+    /// Updates a To-do entry
+    /// </summary>
+    /// <param name="entryId">Id of the entry.</param>
+    /// <param name="updatedData">The data to update</param>
+    /// <returns></returns>
+    public bool UpdateEntry(int entryId, EntryDataDto dataDto)
+    {
+        var index = TodoEntries.FindIndex(x => x.Id == entryId);
+        if (index != -1)
+        {
+            TodoEntries[index].Content = dataDto.Content;
+            TodoEntries[index].Title = dataDto.Title;
+            return true;
+        }
 
+        return false;
+    }
     /// <summary>
     /// Gets To-Do entries
     /// </summary>

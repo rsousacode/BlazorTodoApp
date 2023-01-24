@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Components.Forms
+@using BlazorTodoApp.Data
 
 <div class="card">
   <div class="card-header ">
@@ -17,23 +18,22 @@
           </h5>
         }
       </div>
-        <div class="col-1">
-          <button class="btn btn-link" @onclick="OnEditClicked">
-            <span class="oi oi-pencil" aria-hidden="true"></span>
-          </button>
-        </div>
+      <div class="col-1">
+        <button class="btn btn-link" @onclick="OnEditClicked">
+          <span class="oi oi-pencil" aria-hidden="true"></span>
+        </button>
+      </div>
       @if (EditMode)
       {
         // Show the save button
         <div class="col-1">
-          <button class="btn btn-link">
+          <button class="btn btn-link" @onclick="async () => await OnSaveClicked.InvokeAsync(new EntryDataDto(Title, Content))">
             <span class="oi oi-collapse-down" aria-hidden="true"></span>
           </button>
         </div>
       }
       else
       {
-      
         <div class="col-1">
           <button class="btn btn-link">
             <span class="oi oi-x" aria-hidden="true"></span>
@@ -83,5 +83,7 @@
   [Parameter]
   public EventCallback OnEntryClicked { get; set; }
 
+  [Parameter]
+  public EventCallback<EntryDataDto> OnSaveClicked { get; set; }
 
 }

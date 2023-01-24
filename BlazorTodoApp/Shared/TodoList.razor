@@ -19,7 +19,7 @@
       OnEntryClicked="async () => await OnEntryClicked(todoEntry)"
       EditMode=@todoEntry.IsEditMode
       OnEditClicked="async () => await OnEntryEditClicked(todoEntry)"
-
+      OnSaveClicked="async (entryEditData) => await OnEntrySaveClicked(todoEntry.Data.Id, entryEditData)"
     />
   }
 </div>
@@ -51,4 +51,22 @@
     // Toggle collapse state
     RenderData[entryData.Data.Id].IsCollapsed = false;
   }
+  
+  async Task OnEntrySaveClicked(int id, EntryDataDto dataDto)
+  {
+  // Check if exists
+    var item = ListService.GetEntryById(id);
+
+    if (item != null)
+    {
+      // Update data in the "database"
+      ListService.UpdateEntry(id, dataDto);
+    }
+
+    // Set edit mode to false
+    RenderData[id].IsEditMode = false;
+
+
+  }
+
 }
