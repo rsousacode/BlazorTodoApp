@@ -4,7 +4,7 @@
 <div class="navbar-nav align-items-center m-3">
   <div class="col">
     <button type="button"
-            class=" btn btn-primary px-sm-4 m-1 align-content-center">
+            class=" btn btn-primary px-sm-4 m-1 align-content-center" @onclick="OnAddEntryClicked">
       Add item
     </button>
   </div>
@@ -20,7 +20,8 @@
       EditMode=@todoEntry.IsEditMode
       OnEditClicked="async () => await OnEntryEditClicked(todoEntry)"
       OnSaveClicked="async (entryEditData) => await OnEntrySaveClicked(todoEntry.Data.Id, entryEditData)"
-    />
+      CreateMode="@todoEntry.IsCreateMode"
+      />
   }
 </div>
 
@@ -51,10 +52,30 @@
     // Toggle collapse state
     RenderData[entryData.Data.Id].IsCollapsed = false;
   }
-  
+  async Task OnAddEntryClicked()
+  {
+  // Add a new entry to the render data and assign a id
+    var id = ListService.TodoEntries.Count;
+    
+    var temporaryEntryData = new EntryData()
+    {
+      Id = id,
+      Title = "",
+      Content = ""
+    };
+    
+    RenderData[id] = new EntryRenderData(temporaryEntryData)
+    {
+      // Set this item to edit mode (to show forms) 
+      IsEditMode = true,
+      // Set item to Create mode
+      IsCreateMode = true,
+      IsCollapsed = false,
+    };
+  }
   async Task OnEntrySaveClicked(int id, EntryDataDto dataDto)
   {
-  // Check if exists
+    // Check if exists
     var item = ListService.GetEntryById(id);
 
     if (item != null)
@@ -62,11 +83,16 @@
       // Update data in the "database"
       ListService.UpdateEntry(id, dataDto);
     }
+    else // Entry is being created
+    {
+      var newEntry = ListService.AddEntry(dataDto);
+      RenderData[newEntry.Id] = new EntryRenderData(newEntry);
+      
+      // Let the entry expanded
+      RenderData[newEntry.Id].IsCollapsed = false;
+    }
 
     // Set edit mode to false
     RenderData[id].IsEditMode = false;
-
-
   }
-
 }

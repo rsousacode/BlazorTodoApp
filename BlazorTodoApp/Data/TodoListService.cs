@@ -23,6 +23,24 @@ public class TodoListService
 
         };
     }
+    
+    /// <summary>
+    /// Adds a To-Do entry to TodoEntries list.
+    /// </summary>
+    /// <param name="entry">Entry to add</param>
+    public EntryData AddEntry(EntryDataDto entry)
+    {
+        // Create new entry
+        var newEntry = new EntryData()
+        {
+            Id = TodoEntries.Count,
+            Content = entry.Content,
+            Title = entry.Title
+        };
+    
+        TodoEntries.Add(newEntry);
+        return newEntry;
+    }
     /// <summary>
     /// Updates a To-do entry
     /// </summary>

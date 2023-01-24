@@ -18,11 +18,14 @@
           </h5>
         }
       </div>
-      <div class="col-1">
-        <button class="btn btn-link" @onclick="OnEditClicked">
-          <span class="oi oi-pencil" aria-hidden="true"></span>
-        </button>
-      </div>
+      @if(!CreateMode)
+      {
+        <div class="col-1">
+          <button class="btn btn-link" @onclick="OnEditClicked">
+            <span class="oi oi-pencil" aria-hidden="true"></span>
+          </button>
+        </div>
+      }
       @if (EditMode)
       {
         // Show the save button
@@ -73,6 +76,9 @@
 
   [Parameter]
   public bool EditMode { get; set; }
+
+  [Parameter]
+  public bool CreateMode { get; set; }
 
   [Parameter]
   public EventCallback OnEditClicked { get; set; }
