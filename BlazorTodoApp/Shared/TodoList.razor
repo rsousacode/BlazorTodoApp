@@ -14,7 +14,13 @@
   {
     <TodoEntry
       Title=@todoEntry.Data.Title
-      Content=@todoEntry.Data.Content/>
+      Content=@todoEntry.Data.Content
+      Collapsed=@todoEntry.IsCollapsed
+      OnEntryClicked="async () => await OnEntryClicked(todoEntry)"
+      EditMode=@todoEntry.IsEditMode
+      OnEditClicked="async () => await OnEntryEditClicked(todoEntry)"
+
+    />
   }
 </div>
 
@@ -30,5 +36,19 @@
       RenderData.Add(entryData.Id, new EntryRenderData(entryData));
     }
   }
-
+  async Task OnEntryClicked(EntryRenderData entryData)
+  {
+    var collapsed = RenderData[entryData.Data.Id].IsCollapsed;
+    RenderData[entryData.Data.Id].IsCollapsed = !collapsed;
+  }
+  
+  async Task OnEntryEditClicked(EntryRenderData entryData)
+  {
+  // Toggle editMode
+    var editMode = RenderData[entryData.Data.Id].IsEditMode;
+    RenderData[entryData.Data.Id].IsEditMode = !editMode;
+        
+    // Toggle collapse state
+    RenderData[entryData.Data.Id].IsCollapsed = false;
+  }
 }
