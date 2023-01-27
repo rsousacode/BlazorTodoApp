@@ -21,7 +21,8 @@
       OnEditClicked="async () => await OnEntryEditClicked(todoEntry)"
       OnSaveClicked="async (entryEditData) => await OnEntrySaveClicked(todoEntry.Data.Id, entryEditData)"
       CreateMode="@todoEntry.IsCreateMode"
-      />
+      OnRemoveClicked="async () => await OnRemoveEntryClicked(todoEntry.Data.Id)"
+    />
   }
 </div>
 
@@ -94,5 +95,14 @@
 
     // Set edit mode to false
     RenderData[id].IsEditMode = false;
+  }
+  
+  async Task OnRemoveEntryClicked(int id)
+  {
+  // Add a new entry to the render data and assign a id
+    ListService.DeleteEntry(id);
+
+  // Delete from the rendering data
+    RenderData.Remove(id);
   }
 }

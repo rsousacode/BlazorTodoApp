@@ -38,7 +38,7 @@
       else
       {
         <div class="col-1">
-          <button class="btn btn-link">
+          <button class="btn btn-link" @onclick="OnRemoveClicked">
             <span class="oi oi-x" aria-hidden="true"></span>
           </button>
         </div>
@@ -92,4 +92,6 @@
   [Parameter]
   public EventCallback<EntryDataDto> OnSaveClicked { get; set; }
 
+  [Parameter]
+  public EventCallback OnRemoveClicked { get; set; }
 }
